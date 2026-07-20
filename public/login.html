@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign in — Marginalia</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/index.html" class="brand">margin<em>alia</em></a>
+    <div class="nav-links" id="nav-links"></div>
+  </div>
+</nav>
+
+<main class="form-page">
+  <div class="form-card">
+    <h1 class="form-title">Welcome back</h1>
+    <p class="form-sub">Sign in to write, publish, and leave notes in the margin.</p>
+
+    <div id="form-banner" class="banner" style="display:none;"></div>
+
+    <form id="login-form">
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password" />
+      </div>
+      <button type="submit" class="btn btn-accent" style="width:100%; justify-content:center;">Sign in</button>
+    </form>
+
+    <p class="form-footer">No account yet? <a href="/register.html">Start writing</a></p>
+  </div>
+</main>
+
+<script src="/js/api.js"></script>
+<script src="/js/nav.js"></script>
+<script src="/js/auth.js"></script>
+</body>
+</html>

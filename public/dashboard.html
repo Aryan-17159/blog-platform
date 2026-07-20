@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Write — Marginalia</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/index.html" class="brand">margin<em>alia</em></a>
+    <div class="nav-links" id="nav-links"></div>
+  </div>
+</nav>
+
+<main class="dash-layout">
+  <span class="eyebrow">Your desk</span>
+  <h1 class="page-title" style="font-size:2rem;">Write and manage posts</h1>
+
+  <div class="dash-grid">
+    <section>
+      <div class="dash-section-title" id="editor-title">New post</div>
+
+      <div id="editor-banner" class="banner" style="display:none;"></div>
+
+      <form id="post-form" class="form-card" style="padding:24px;">
+        <div class="field">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title" maxlength="140" required />
+        </div>
+        <div class="field">
+          <label for="body">Body</label>
+          <textarea id="body" name="body" rows="10" required></textarea>
+        </div>
+        <div class="checkbox-row">
+          <input type="checkbox" id="published" name="published" checked />
+          <label for="published" style="margin:0; text-transform:none; font-family:var(--font-body); font-size:0.85rem;">Published (uncheck to save as draft)</label>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button type="submit" id="editor-submit" class="btn btn-accent">Publish</button>
+          <button type="button" id="editor-cancel" class="btn" style="display:none;">Cancel edit</button>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <div class="dash-section-title">Your posts</div>
+      <div id="my-posts-list">
+        <p class="sign-in-prompt">Loading…</p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">MARGINALIA — A BLOG PLATFORM WITH COMMENTS</footer>
+
+<script src="/js/api.js"></script>
+<script src="/js/nav.js"></script>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>
