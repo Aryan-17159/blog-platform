@@ -1,94 +1,47 @@
-# Marginalia — Blog Platform with Comments
+# Task 4 · Marginalia — Blog Platform with Comments
 
-A full-stack blogging platform where users register, publish posts, and leave
-comments that render as a **marginalia rail** beside the article — annotations
-in the margin, not a stacked list at the bottom.
+An editorial blogging platform with warm paper backgrounds, serif typography, searchable stories and comments in the article margin. Node.js/Express, MongoDB/Mongoose and a buildless HTML/CSS/JavaScript frontend.
 
-## Stack
+![Desktop preview](docs/desktop.png)
 
-- **Backend:** Node.js, Express, MongoDB Atlas (via Mongoose)
-- **Auth:** JWT stored in an httpOnly cookie, passwords hashed with bcrypt
-- **Frontend:** Vanilla HTML / CSS / JS (no framework, no build step)
+## Run
+
+Requires Node.js 20+ and MongoDB.
+
+```sh
+npm ci
+cp .env.example .env
+# Set MONGO_URI and a generated JWT_SECRET.
+npm start
+```
+
+Open http://localhost:3000. Register, choose **Write**, and publish a story. New databases start empty; the screenshot contains a demonstration article created during browser testing.
 
 ## Features
 
-- User registration, login, logout, session persistence
-- Create, edit, delete, and publish/draft your own blog posts
-- Comment on any post; delete your own comments
-- RESTful JSON API consumed by the static frontend
-- Authorization checks: only an author can edit/delete their own post or comment
+- Registration, login/logout and persistent httpOnly-cookie sessions; production cookies require HTTPS.
+- Author dashboard for creating, editing, deleting, publishing and saving drafts, with word count/read-time guidance.
+- Drafts are visible only to their author, including direct URL/API requests; comments are accepted only on published posts.
+- Readers can add comments and remove their own notes; only authors can edit/delete their posts.
+- Published feed with client-side title/excerpt/author search, reading view and responsive margin notes.
+- Ownership enforcement and plain-text rendering of reader content.
 
-## Project structure
+## REST API
 
-```
-blog-platform/
-├── server/
-│   ├── server.js            # Express app entry point
-│   ├── models/               # Mongoose schemas: User, Post, Comment
-│   ├── routes/                # auth.js, posts.js, comments.js
-│   └── middleware/auth.js    # JWT verification
-├── public/                    # Static frontend
-│   ├── index.html             # Feed
-│   ├── login.html / register.html
-│   ├── post.html               # Post detail + marginalia comments
-│   ├── dashboard.html         # Create/edit/delete your posts
-│   ├── css/style.css
-│   └── js/                     # api.js, nav.js, feed.js, auth.js, post.js, dashboard.js
-├── package.json
-└── .env.example
+`POST /api/auth/register`, `/login`, `/logout`; `GET /api/auth/me`; public published `GET /api/posts`; authenticated `GET /api/posts/mine`; `GET/PUT/DELETE /api/posts/:id`; `POST /api/posts`; `POST /api/posts/:id/comments`; `DELETE /api/posts/:id/comments/:commentId`.
+
+## Verify
+
+Against an isolated running test server:
+
+```sh
+node --test tests/api.test.cjs
 ```
 
-## Setup
+Tests cover private drafts, publication, cross-user edit denial, comment ownership and deletion. Browser QA exercised registration, writing/publishing, reading and commenting, with desktop and [390px mobile previews](docs/mobile.png). `TEST_URL` overrides the test origin.
 
-1. **Install dependencies**
-   ```bash
-   npm install
-   ```
+## Deploy
 
-2. **Configure environment variables**
+Connect to a Node host such as Render. Build `npm ci`, start `npm start`; configure `MONGO_URI`, generated `JWT_SECRET`, `NODE_ENV=production`, and optionally `CLIENT_ORIGIN` for an explicitly allowed separate frontend. The default frontend is served by the backend on the same origin. Use HTTPS for production session cookies. MongoDB must be externally hosted or on persistent storage.
 
-   Copy `.env.example` to `.env` and fill in real values:
-   ```bash
-   cp .env.example .env
-   ```
-   - `MONGO_URI` — your MongoDB Atlas connection string
-   - `JWT_SECRET` — any long random string
-   - `PORT` — defaults to 3000
-
-3. **Run the server**
-   ```bash
-   npm start
-   ```
-   Or, for auto-restart during development:
-   ```bash
-   npm run dev
-   ```
-
-4. Visit `http://localhost:3000`
-
-## API reference
-
-| Method | Route                              | Auth required | Description                          |
-|--------|-------------------------------------|---------------|---------------------------------------|
-| POST   | `/api/auth/register`               | No            | Create an account                     |
-| POST   | `/api/auth/login`                  | No            | Sign in                               |
-| POST   | `/api/auth/logout`                 | No            | Clear session cookie                  |
-| GET    | `/api/auth/me`                     | Yes           | Current user                          |
-| GET    | `/api/posts`                       | No            | List published posts                  |
-| GET    | `/api/posts/mine`                  | Yes           | List your own posts (incl. drafts)    |
-| GET    | `/api/posts/:id`                   | No            | Single post + its comments            |
-| POST   | `/api/posts`                       | Yes           | Create a post                         |
-| PUT    | `/api/posts/:id`                   | Yes (author)  | Edit a post                           |
-| DELETE | `/api/posts/:id`                   | Yes (author)  | Delete a post + its comments          |
-| POST   | `/api/posts/:postId/comments`      | Yes           | Add a comment                         |
-| DELETE | `/api/posts/:postId/comments/:id`  | Yes (author)  | Delete your own comment               |
-
-## Notes
-
-- This project deliberately avoids a frontend framework and build tooling to
-  keep the stack transparent for a coursework submission — everything is
-  plain HTML/CSS/JS served statically by Express.
-- `.env` is git-ignored. Never commit real database credentials.
-- To deploy (e.g. on Render, as with the portfolio site), set the same three
-  environment variables in the host's dashboard and point the build/start
-  command at `npm start`.
+No new live deployment was provisioned in this workspace.
